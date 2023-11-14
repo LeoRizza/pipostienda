@@ -1,0 +1,21 @@
+<div class="contenedor">
+    <div id="messagesContainer">
+        {{#each messages}}
+        <div>
+            <p>{{this.email}}: {{this.message}}</p>
+        </div>
+        {{/each}}
+    </div>
+    <div>
+        <form id="messageForm">
+            <input type="text" id="email" name="email" placeholder="Email" required>
+            <input type="text" id="message" name="message" placeholder="Escribe tu mensaje" required>
+            <button type="button" id="enviarMensaje">Enviar</button>
+        </form>
+    </div>
+</div>
+
+<script src="/js/chat.js"></script>
+
+
+
