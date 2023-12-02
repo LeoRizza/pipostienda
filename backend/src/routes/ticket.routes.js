@@ -6,3 +6,5 @@ const ticketRouter = Router()
 ticketRouter.get('/:tid', getTicket)
 ticketRouter.post('/purchase', createTicket)
 ticketRouter.delete('/purchase/:tid', deleteTicket)
+
+export default ticketRouter
