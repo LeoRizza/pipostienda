@@ -3,6 +3,6 @@ import { getMockingProducts } from "../controllers/mocking.controller.js";
 
 const mockingRouter = Router();
 
-mockingRouter.get("/mockingproducts", getMockingProducts);
+mockingRouter.get("/", getMockingProducts);
 
 export default mockingRouter;

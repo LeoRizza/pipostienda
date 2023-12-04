@@ -6,7 +6,7 @@ export const getMockingProducts = (req, res) => {
         products.push(fakeProduct());
     }
 
-    res.send({ products });
+    res.json( products );
 };
 
 
