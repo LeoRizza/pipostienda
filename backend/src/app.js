@@ -70,7 +70,22 @@ app.use(passport.session())
 app.use(addLogger)
 
 app.get('/info', (req, res) => {
-    req.logger.info("hola")
+    req.logger.info('<span style="color:blue">Texto informativo</span><br/>')
+    res.send("Hola!")
+})
+
+app.get('/warning', (req, res) => {
+    req.logger.warning('<span style="color:cyan">Texto Warning</span><br/>')
+    res.send("Hola!")
+})
+
+app.get('/error', (req, res) => {
+    req.logger.error('<span style="color:yellow">Texto Error</span><br/>')
+    res.send("Hola!")
+})
+
+app.get('/fatal', (req, res) => {
+    req.logger.fatal('<span style="color:red">Texto Fatal</span><br/>')
     res.send("Hola!")
 })
 

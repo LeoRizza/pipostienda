@@ -12,7 +12,7 @@ const ItemListContainer = () => {
             ? `http://localhost:8080/api/products?category=${idCategoria}`
             : 'http://localhost:8080/api/products';
 
-        fetch(apiUrl)
+        fetch(apiUrl) 
             .then(response => response.json())
             .then(data => setProductos(data))
             .catch(error => console.error('Error al obtener productos:', error));

@@ -24,7 +24,6 @@ const logger = winston.createLogger({
             filename: './errors.html',
             level: 'fatal',
             format: winston.format.combine(
-                winston.format.colorize({ colors: customLevelOpt.colors }),
                 winston.format.simple()
             )
         }),
@@ -32,7 +31,6 @@ const logger = winston.createLogger({
             filename: './errors.html',
             level: 'error',
             format: winston.format.combine(
-                winston.format.colorize({ colors: customLevelOpt.colors }),
                 winston.format.simple()
             )
         }),
@@ -40,7 +38,6 @@ const logger = winston.createLogger({
             filename: './loggers.html',
             level: 'warning',
             format: winston.format.combine(
-                winston.format.colorize({ colors: customLevelOpt.colors }),
                 winston.format.simple()
             )
         }),
@@ -48,7 +45,6 @@ const logger = winston.createLogger({
             filename: './loggers.html',
             level: 'info',
             format: winston.format.combine(
-                winston.format.colorize({ colors: customLevelOpt.colors }),
                 winston.format.simple()
             )
         }),
