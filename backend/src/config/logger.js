@@ -17,6 +17,8 @@ const customLevelOpt = {
     }
 }
 
+const isDevelopment = process.env.MODO === 'development';
+
 const logger = winston.createLogger({
     levels: customLevelOpt.levels,
     transports: [
@@ -49,17 +51,17 @@ const logger = winston.createLogger({
             )
         }),
         new winston.transports.Console({
-            level: 'debug',
+            level: isDevelopment ? 'debug' : 'info',
             format: winston.format.combine(
                 winston.format.colorize({ colors: customLevelOpt.colors }),
                 winston.format.simple()
             )
         })
     ]
-})
+});
 
 export const addLogger = (req, res, next) => {
-    req.logger = logger
-    req.logger.debug(`${req.method} es ${req.url} - ${new Date().toLocaleTimeString()}`)
-    next()
-}
+    req.logger = logger;
+    req.logger.debug(`${req.method} es ${req.url} - ${new Date().toLocaleTimeString()}`);
+    next();
+};
