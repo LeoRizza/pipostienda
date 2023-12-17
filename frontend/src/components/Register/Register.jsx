@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useRef } from "react"
 import { useNavigate } from "react-router-dom"
+import './Register.css';
 
 const Register = () => {
     const formRef = useRef(null)

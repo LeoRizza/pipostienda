@@ -2,6 +2,7 @@ import { useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { NavLink } from 'react-router-dom';
 import './Login.css';
 
 export const Login = () => {
@@ -48,7 +49,11 @@ export const Login = () => {
                 <Button variant="success" type="submit">
                     Iniciar Sesion
                 </Button>
+
             </Form>
+            <NavLink className="registerBtn" to="/register"><Button variant="success" type="submit">
+                    Register
+                </Button></NavLink>
         </div>
     )
 }

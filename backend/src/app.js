@@ -4,7 +4,6 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 import cors from 'cors'
 import initializePassport from './config/passport.js'
-import { engine } from 'express-handlebars'
 import { Server } from 'socket.io'
 import { fileURLToPath } from 'url'
 import path from 'path';
@@ -103,11 +102,6 @@ io.on('connection', async (socket) => {
         }
     });
 });
-
-
-app.engine('handlebars', engine());
-app.set('view engine', 'handlebars');
-app.set('views', path.resolve(__dirname, './views'));
 
 app.use('/', router)
 
