@@ -1,6 +1,6 @@
 import { ticketModel } from "../models/ticket.models.js";
 import { cartModel } from "../models/carts.models.js";
-import crypto from 'node:crypto';
+import { v4 as uuidv4 } from 'uuid';
 
 export const getTicket = async (req, res) => {
     const { id } = req.params;
@@ -23,8 +23,7 @@ export const createTicket = async (req, res) => {
     try {
         const { cartId } = req.cookies;
 
-        const randomBytes = crypto.randomBytes(16);
-        const code = randomBytes.toString('hex');
+        const code = uuidv4();
         const currentTimestamp = Date.now();
 
         const calculateTotalAmount = (products) => {

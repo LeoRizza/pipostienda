@@ -14,6 +14,7 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import router from './routes/index.routes.js'
+import { addLogger } from './config/logger.js'
 
 const whiteList = ['http://localhost:5173']
 
@@ -67,6 +68,12 @@ app.use(session({
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(addLogger)
+
+app.get('/info', (req, res) => {
+    req.logger.info("hola")
+    res.send("Hola!")
+})
 
 io.on('connection', async (socket) => {
     console.log("Servidor Socket.io conectado");

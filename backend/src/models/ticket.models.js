@@ -1,22 +1,24 @@
 import { Schema, model } from "mongoose";
+import { v4 as uuidv4 } from "uuid"
 
 const ticketSchema = new Schema({
     code: {
         type: String,
         required: true,
-        unique: true,
+        default: uuidv4()
     },
     purchase_datetime: {
         type: Date,
-        default: Date.now,
+        default: Date.now()
     },
     amount: {
         type: Number,
-        required: true,
+        required: true
     },
     purchaser: {
         type: Schema.Types.ObjectId,
-        ref: "users"
+        ref: "users",
+        required: true
     },
 });
 
