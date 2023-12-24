@@ -124,4 +124,23 @@ export const resetPassToken = async (req, res) => {
     }
 };
 
+//premium user
+export const premiumUser = async (req, res) => {
+    const { id } = req.params;
+    const { premium } = req.body;
+
+    try {
+        const user = await userModel.findByIdAndUpdate(id, { premium }, { new: true });
+
+        if (user) {
+            res.status(200).send({ respuesta: 'Estado premium actualizado', mensaje: user });
+        } else {
+            res.status(404).send({ respuesta: 'Error al actualizar estado premium', mensaje: 'Usuario no encontrado' });
+        }
+    } catch (error) {
+        res.status(400).send({ respuesta: 'Error al actualizar estado premium', mensaje: error });
+    }
+};
+
+
 export { recoveryLinks };
