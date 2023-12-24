@@ -31,6 +31,10 @@ const userSchema = new Schema({
     cart: {
         type: Schema.Types.ObjectId,
         ref: 'carts'
+    },
+    recoveryToken: {
+        type: String,
+        default: null
     }
 })
 
