@@ -13,13 +13,15 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import router from './routes/index.routes.js'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
 import { addLogger } from './config/logger.js'
 
 const whiteList = ['http://localhost:5173']
 
 const corsOptions = {
-    origin: function(origin, callback) {
-        if(whiteList.indexOf(origin) != -1 || !origin) {
+    origin: function (origin, callback) {
+        if (whiteList.indexOf(origin) != -1 || !origin) {
             callback(null, true)
         } else {
             callback(new Error("Acceso denegado"))
@@ -46,6 +48,20 @@ mongoose.connect(process.env.MONGO_URL)
     .catch(() => console.log('Error en conexion a BDD'))
 
 
+const swaggerOptions = {
+    definition: {
+        openapi: '3.1.0',
+        info: {
+            title: "Documentacion del curso de Backend",
+            description: "API Coder Backend"
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json())
 app.use(cors(corsOptions))

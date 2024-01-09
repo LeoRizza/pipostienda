@@ -1,0 +1,175 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtener a todos los productos
+      tags:
+        - products
+      responses:
+        '200':
+          description: productos obtenidos correctamente
+          content: 
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/product'
+        '500':
+          description: Error interno del servidor
+    post:
+      summary: Crear un nuevo producto
+      tags:
+        - products
+      parameters:
+        - name: body 
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              title: 
+                type: string
+              description: 
+                type: string
+              price: 
+                type: Number
+              stock: 
+                type: Number 
+              category:
+                type: string
+              status:
+                type: Boolean
+              code:
+                type: string  
+      responses:
+        '201':
+          description: producto creado correctamente
+          content: 
+            application/json:
+              schema: 
+                items:
+                  $ref: '#/components/schemas/product'
+        '500':
+          description: Error interno del servidor
+  /api/products/{id}:  
+    get:
+      summary: Obtener un producto
+      tags:
+        - products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $type: String
+          description: ID del producto a buscar
+      responses:
+        '200':
+          description: producto obtenido correctamente
+          content: 
+            application/json:
+              schema: 
+                items:
+                  $ref: '#/components/schemas/product'
+        '500':
+          description: Error interno del servidor
+    put:
+      summary: Actualizar un producto
+      tags:
+        - products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $type: String
+          description: ID del producto a actualizar
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              title: 
+                type: string
+              description: 
+                type: string
+              price: 
+                type: Number
+              stock: 
+                type: Number 
+              category:
+                type: string
+              status:
+                type: Boolean
+              code:
+                type: string
+      responses:
+        '200':
+          description: producto actualizado correctamente
+          content: 
+            application/json:
+              schema: 
+                items:
+                  $ref: '#/components/schemas/product'
+        '500':
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un producto
+      tags:
+        - products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $type: String
+          description: ID del producto a eliminar
+      responses:
+        '200':
+          description: producto Eliminado correctamente
+          content: 
+            application/json:
+              schema: 
+                items:
+                  $ref: '#/components/schemas/product'
+        '500':
+          description: Error interno del servidor
+components:
+  schemas:
+    product: 
+      type: object
+      properties:
+        _id: 
+          type: 0bjectId
+          description: ID autogenerado por MongoDb
+        title: 
+          type: String
+          description: Nombre del producto
+        description: 
+          type: String
+          description: Descripcion del producto
+        price:
+          type: Number
+          description: Precio del producto
+        stock: 
+          type: Number
+          description: Stock disponible del producto
+        category: 
+          type: String
+          description: Contraseña del producto
+        status: 
+          type: Boolean
+          description: Disponibilidad del producto
+        code:
+          type: String
+          description: Codigo de producto
+      example:
+        _id: ObjectId('31ewewx312312')
+        title: Camiseta River Plate
+        description: Camiseta tituar del club atletico River Plate
+        price: 1500
+        stock: 85
+        category: camisetas
+        status: true
+        code: ASD456
+      

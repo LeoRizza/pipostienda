@@ -13,12 +13,14 @@ const ExtractJWT = jwt.ExtractJwt
 const initializePassport = () => {
 
     const cookieExtractor = req => {
-        const token = req.headers.authorization ? req.headers.authorization : {}
-        /* console.log("cookieExtractor", token) */
-
-        return token
-
+        let token = null;
+        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+            // Si la cabecera Authorization comienza con 'Bearer ', se extrae el token.
+            token = req.headers.authorization.slice(7, req.headers.authorization.length);
+        }
+        return token;
     }
+    
 
     passport.use('jwt', new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]), 

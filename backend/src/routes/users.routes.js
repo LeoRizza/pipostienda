@@ -4,10 +4,10 @@ import { passportError, authorization } from "../utils/messagesError.js";
 
 const userRouter = Router()
 
-userRouter.get('/', getUser)
+userRouter.get('/', passportError('jwt'), authorization('admin'), getUser)
 userRouter.get('/:id', getUserById)
-userRouter.put('/:id', putUser)
-userRouter.delete('/:id', deleteUser)
+userRouter.put('/:id', passportError('jwt'), authorization('admin'), putUser)
+userRouter.delete('/:id', passportError('jwt'), authorization('admin'), deleteUser)
 //recovery password
 userRouter.post('/password-recovery', passwordRecovery);
 userRouter.post('/reset-password/:token', resetPassToken);
