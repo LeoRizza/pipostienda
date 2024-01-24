@@ -1,24 +1,34 @@
 import { productModel } from "../models/products.models.js";
 
 export const getProducts = async (req, res) => {
-    const { limit, page, filter, sort } = req.query
+    const { limit, page, sort, category } = req.query
     
-    const pag = page ? page : 1
-    const lim = limit ? limit : 10
-    const ord= sort == 'asc' ? 1 : -1
+    const pag = page ? parseInt(page, 10) : 1;
+    const lim = limit ? parseInt(limit, 10) : 10;
+    const ord = sort === 'asc' ? 1 : -1;
 
     try {
-        const prods = await productModel.paginate({ filter: filter }, { limit: lim, page: pag, sort: { price: ord }})
+        let query = {};
+        if (category) {
+            query.category = category;
+        }
+
+        const prods = await productModel.paginate(query, { limit: lim, page: pag, sort: { price: ord }});
 
         if (prods) {
-            return res.status(200).send(prods)
+            return res.status(200).send({
+                totalDocs: prods.totalDocs,
+                totalPages: prods.totalPages,
+                page: prods.page,
+                products: prods.docs
+            });
         }
-        res.status(404).send({ error: "productos no encontrados"})
+        res.status(404).send({ error: "productos no encontrados"});
 
-    } catch {
-        res.status(500).send({ error: `Error en consultar productos ${error}`})
+    } catch (error) {
+        res.status(500).send({ error: `Error en consultar productos ${error}`});
     }
-}
+};
 
 export const getProductById = async (req, res) => {
     const { id } = req.params
@@ -37,10 +47,10 @@ export const getProductById = async (req, res) => {
 }
 
 export const postProduct = async (req, res) => {
-    const { title, description, code, price, stock, category } = req.body
+    const { title, description, code, price, stock, category, thumbnails } = req.body
 
     try {
-        const prod = await productModel.create({ title, description, code, price, stock, category })
+        const prod = await productModel.create({ title, description, code, price, stock, category, thumbnails })
 
         if (prod) {
             return res.status(201).send(prod)

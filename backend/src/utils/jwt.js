@@ -10,7 +10,8 @@ export const generateToken = (user) => {
 }
 
 export const authToken = (req, res, next) => {
-    const authHeader = req.headers.Authorization
+    /* const authHeader = req.headers.Authorization */
+    const authHeader = req.headers.Authorization || req.headers.authorization;
 
     if (!authHeader) {
         return res.status(401).send({ error: 'Usuario no autenticado' })

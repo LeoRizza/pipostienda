@@ -1,37 +1,18 @@
 import './ItemList.css';
-import { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom'; // Asegúrate de importar Link desde react-router-dom
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-const ItemList = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch('http://localhost:8080/api/products');
-                const data = await response.json();
-                setProducts(Array.isArray(data.docs) ? data.docs : []);
-            } catch (error) {
-                console.error('Error al obtener los productos:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProducts();
-    }, []);
-
+const ItemList = ({ productos, loading }) => {
     return (
         <div className='contenedorProductos'>
             {loading ? (
                 <p>Cargando productos...</p>
-            ) : Array.isArray(products) && products.length > 0 ? (
-                products.map(product => (
+            ) : Array.isArray(productos) && productos.length > 0 ? (
+                productos.map(product => (
                     <div key={product._id}>
                         <Card className='cardLoca'>
-                            <Card.Img variant="top" className='detalleImg' src={product.img} />
+                            <Card.Img variant="top" className='detalleImg' src={product.thumbnails} />
                             <Card.Body style={{ position: "relative" }}>
                                 <div className='dataCard'>
                                     <p>stock: {product.stock} </p>
@@ -44,7 +25,7 @@ const ItemList = () => {
                                     <strong>price: $ {product.price}</strong>
                                 </Card.Text>
                                 <Link className='botonDetalle' to={`/item/${product._id}`} >detalle</Link>
-                                <p>codigo: {product._id}</p>
+                                <p>codigo: {product.code}</p>
                             </Card.Body>
                         </Card>
                     </div>
@@ -55,5 +36,10 @@ const ItemList = () => {
         </div>
     );
 }
+
+ItemList.propTypes = {
+    productos: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
+};
 
 export default ItemList;

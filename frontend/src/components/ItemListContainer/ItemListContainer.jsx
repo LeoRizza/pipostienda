@@ -1,30 +1,118 @@
-import { useState, useEffect } from "react";
+/* import { useState, useEffect } from "react";
 import ItemList from "../ItemList/ItemList";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import queryString from "query-string";
 import './ItemListContainer.css';
 
 const ItemListContainer = () => {
     const [productos, setProductos] = useState([]);
-    const { idCategoria } = useParams();
+    const [loading, setLoading] = useState(true);
+    const location = useLocation();
+    const { category } = useParams();
 
     useEffect(() => {
-        const apiUrl = idCategoria
-            ? `http://localhost:8080/api/products?category=${idCategoria}`
-            : 'http://localhost:8080/api/products';
+        const fetchProducts = async () => {
+            try {
+                let apiUrl = 'http://localhost:8080/api/products';
 
-        fetch(apiUrl) 
-            .then(response => response.json())
-            .then(data => setProductos(data))
-            .catch(error => console.error('Error al obtener productos:', error));
-    }, [idCategoria]);
+                const queryParams = queryString.parse(location.search);
+                const page = queryParams.page || 1;
+
+                if (category) {
+                    apiUrl += `?category=${category}`;
+                }
+
+                const response = await fetch(`${apiUrl}?limit=12&page=${page}&sort=asc`);
+                const data = await response.json();
+
+                if (data && data.products) {
+                    setProductos(data.products);
+                } else if (Array.isArray(data)) {
+                    // Handle the case where the response is already an array
+                    setProductos(data);
+                } else {
+                    console.error('La respuesta del servidor no contiene la propiedad "products".', data);
+                }
+            } catch (error) {
+                console.error('Error al obtener productos:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, [category, location.search]);
 
     return (
-        <>
+        <div>
             <div className="divTitle">
                 <img className="logoSabroso" src="../img/logo.png" alt="logo sabroson" />
             </div>
-            <ItemList productos={productos} />
-        </>
+            {productos && productos.length > 0 ? (
+                <ItemList productos={productos} loading={loading} />
+            ) : (
+                <p>No se encontraron productos.</p>
+            )}
+        </div>
+    );
+}
+
+export default ItemListContainer;
+ */
+
+import { useState, useEffect } from "react";
+import ItemList from "../ItemList/ItemList";
+import { useLocation, useParams } from "react-router-dom";
+import queryString from "query-string";
+import './ItemListContainer.css';
+
+const ItemListContainer = () => {
+    const [productos, setProductos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const location = useLocation();
+    const { category } = useParams();
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                let apiUrl = 'http://localhost:8080/api/products';
+
+                const queryParams = {
+                    category: category || '', // Incluye la categoría solo si está presente
+                    ...queryString.parse(location.search),
+                };
+
+                const response = await fetch(`${apiUrl}?${queryString.stringify(queryParams)}`);
+                const data = await response.json();
+
+                if (data && data.products) {
+                    setProductos(data.products);
+                } else if (Array.isArray(data)) {
+                    setProductos(data);
+                } else {
+                    console.error('La respuesta del servidor no contiene la propiedad "products".', data);
+                }
+            } catch (error) {
+                console.error('Error al obtener productos:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, [category, location.search]);
+
+    return (
+        <div>
+            <div className="divTitle">
+                <img className="logoSabroso" src="../img/logo.png" alt="logo sabroson" />
+            </div>
+            {productos && productos.length > 0 ? (
+                <ItemList productos={productos} loading={loading} />
+            ) : (
+                <p>No se encontraron productos.</p>
+            )}
+        </div>
     );
 }
 

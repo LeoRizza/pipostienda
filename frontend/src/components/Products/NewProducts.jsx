@@ -17,7 +17,7 @@ export default function NewProducts() {
         const response = await fetch('http://localhost:8080/api/products', {
             method: 'POST',
             headers: {
-                'Authorization': `${token}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-type': 'application/json'
             },
             body: JSON.stringify(data)
@@ -53,7 +53,7 @@ export default function NewProducts() {
 
                 <Form.Group className="mb-3">
                     <Form.Label>Stock</Form.Label>
-                    <Form.Control type="number" name="stock" placeholder="Ingresa Nombre" />
+                    <Form.Control type="number" name="stock" placeholder="Ingresa Stock" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -64,6 +64,11 @@ export default function NewProducts() {
                 <Form.Group className="mb-3">
                     <Form.Label>Codigo</Form.Label>
                     <Form.Control type="text" name="code" placeholder="Ingresa codigo del producto" />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                    <Form.Label>Thumbnails</Form.Label>
+                    <Form.Control type="text" name="thumbnails" placeholder="Ingresa Url de la imagen del producto" />
                 </Form.Group>
 
                 <Button variant="success" type="submit">
