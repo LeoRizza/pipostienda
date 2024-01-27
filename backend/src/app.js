@@ -17,7 +17,7 @@ import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUiExpress from 'swagger-ui-express'
 import { addLogger } from './config/logger.js'
 
-const whiteList = ['http://localhost:5173']
+const whiteList = ['http://localhost:5174']
 
 const corsOptions = {
     origin: function (origin, callback) {

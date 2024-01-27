@@ -28,7 +28,7 @@ export const postLogin = async (req, res) => {
             res.status(200).send({mensaje: "usuario logueado"})
         }
  */
-        const token = generateToken(req.user)
+        const token = generateToken(req.user, res)
 
         res.status(200).send({ token })
     } catch(error) {
@@ -42,7 +42,7 @@ export const postRegister = async (req, res) => {
             return res.status(400).send({ mensaje: "Usuario ya existente" })
         }
 
-        res.status(200).send({ mensaje: "Usuario creado" })
+        res.status(201).send({ mensaje: "Usuario creado" })
     } catch(error) {
         res.status(500).send({ mensaje: 'Error al crear usuario ${error}'})
     }

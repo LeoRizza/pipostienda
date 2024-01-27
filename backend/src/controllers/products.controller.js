@@ -31,20 +31,22 @@ export const getProducts = async (req, res) => {
 };
 
 export const getProductById = async (req, res) => {
-    const { id } = req.params
+    const { id } = req.params;
 
     try {
-        const prod = await productModel.findById(id)
+        const prod = await productModel.findById(id);
 
         if (prod) {
-            return res.status(200).send(product)
+            return res.status(200).send(prod);
         }
-        res.status(404).send({ error: "Producto no encontrado" })
+
+        res.status(404).send({ error: "Producto no encontrado" });
 
     } catch (error) {
-        res.status(500).send({ error: `Error en consultar producto ${error}`})
+        res.status(500).send({ error: `Error en consultar producto ${error}` });
     }
-}
+};
+
 
 export const postProduct = async (req, res) => {
     const { title, description, code, price, stock, category, thumbnails } = req.body
@@ -59,7 +61,7 @@ export const postProduct = async (req, res) => {
         res.status(400).send({ error: `Error en crear producto` })
 
     } catch (error) {
-        if (error.code == 11000) { //error code es de llave duplicada
+        if (error.code == 11000) {
             return res.status(400).send({ error: "Producto ya creado" })
         }
         res.status(500).send({ error: `Error en crear producto ${error}` })
@@ -68,12 +70,12 @@ export const postProduct = async (req, res) => {
 
 export const putProductById = async (req, res) => {
     const { id } = req.params
-    const { title, description, code, price, stock, category } = req.body
+    const { title, description, code, price, stock, category, thumbnails } = req.body
     try {
-        const prod = await productModel.findByIdAndUpdate(id, { title, description, code, price, stock, category })
+        const prod = await productModel.findByIdAndUpdate(id, { title, description, code, price, stock, category, thumbnails })
 
         if (prod) {
-            return res.status(200).send(product)
+            return res.status(200).send(prod)
         }
 
         res.status(404).send({ error: "Producto no encontrado" })
@@ -90,7 +92,7 @@ export const deleteProductById = async (req, res) => {
         const prod = await productModel.findByIdAndDelete(id)
 
         if (prod) {
-            return res.status(200).send(product)
+            return res.status(200).send({ message: 'Producto eliminado con éxito' });
         }
 
         res.status(404).send({ error: "Producto no encontrado" })
