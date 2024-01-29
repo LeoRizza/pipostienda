@@ -5,6 +5,7 @@ import Register from "./components/Register/register"
 import Login from "./components/Login/login"
 import NewProducts from './components/Products/NewProducts'
 import NavBar from "./components/NavBar/NavBar"
+import Profileimg from './components/Profileimg/Profileimg'
 import { CartProvider } from "./context/ContextCart"
 import './App.css'
 
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/item/:idItem" element={<ItemDetailContainer />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/profileimg" element={<Profileimg />} />
             <Route path="/newproducts" element={<NewProducts />} />
             <Route path="*" element={<h2>Sitio en Construccion</h2>} />
           </Routes>

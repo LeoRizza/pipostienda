@@ -19,7 +19,7 @@ const ItemList = ({ productos, loading }) => {
                                 </div>
                                 <Card.Title style={{ fontWeight: "900" }}>{product.title}</Card.Title>
                                 <Card.Text>
-                                    <br />
+                                    {/* <br /> */}
                                     {product.description}
                                     <br />
                                     <strong>price: $ {product.price}</strong>

@@ -39,6 +39,20 @@ const userSchema = new Schema({
     recoveryToken: {
         type: String,
         default: null
+    },
+    documents: [{
+        name: {
+            type: String,
+            required: true,
+        },
+        reference: {
+            type: String,
+            required: true,
+        },
+    }],
+    last_connection: {
+        type: Date,
+        default: null
     }
 })
 
