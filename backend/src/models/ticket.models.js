@@ -16,44 +16,14 @@ const ticketSchema = new Schema({
         required: true
     },
     purchaser: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: "users",
         required: true
-    },
+    }
 });
 
 ticketSchema.pre("findOne", function () {
-    this.populate("purchaser", 'email');
+    this.populate("purchaser", 'first_name last_name email');
 });
-
-/* ticketSchema.pre("findOne", async function () {
-    this.populate("users.email");
-
-    // Send an email to the purchaser
-    await this.users.findOne({ _id: this.purchaser }, { email: 1 }).then((user) => {
-        const email = `
-        Subject: Confirmacion de ticket de compra
-
-        ${user.name},
-
-        Gracias por comprar con nosotros. El codigo de tu ticket es: ${this.code}.
-
-        La compra fue realizada el dia ${this.purchase_datetime}.
-
-        Estamos a su disposicion por cualquier consulta .
-
-        Muchas gracias,
-        El que manda los ticket
-        `;
-
-        await mail.send({
-            to: user.email,
-            from: "tickets@example.com",
-            subject: "Confirmacion de ticket de compra",
-            body: email,
-        });
-    });
-});
- */
 
 export const ticketModel = model("ticket", ticketSchema)

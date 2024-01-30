@@ -30,12 +30,12 @@ const initializePassport = () => {
         const token = req.headers.authorization ? req.headers.authorization : {};
         return token;
     } */
-    
+
 
     passport.use('jwt', new JWTStrategy({
-        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]), 
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
         secretOrKey: process.env.JWT_SECRET
-    }, async (jwt_payload, done) => { 
+    }, async (jwt_payload, done) => {
         try {
             /* console.log("JWT", jwt_payload) */
             return done(null, jwt_payload)

@@ -69,21 +69,27 @@ export const postProduct = async (req, res) => {
 }
 
 export const putProductById = async (req, res) => {
-    const { id } = req.params
-    const { title, description, code, price, stock, category, thumbnails } = req.body
+    const { id } = req.params;
+    const { title, description, code, price, stock, category, thumbnails } = req.body;
+    
     try {
-        const prod = await productModel.findByIdAndUpdate(id, { title, description, code, price, stock, category, thumbnails })
+        const prod = await productModel.findByIdAndUpdate(
+            id,
+            { title, description, code, price, stock, category, thumbnails },
+            { new: true }
+        );
 
         if (prod) {
-            return res.status(200).send(prod)
+            return res.status(200).send(prod);
         }
 
-        res.status(404).send({ error: "Producto no encontrado" })
+        res.status(404).send({ error: "Producto no encontrado" });
 
     } catch (error) {
-        res.status(500).send({ error: `Error en actualizar producto ${error}` })
+        res.status(500).send({ error: `Error en actualizar producto ${error}` });
     }
 }
+
 
 export const deleteProductById = async (req, res) => {
     const { id } = req.params

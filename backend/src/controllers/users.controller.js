@@ -57,6 +57,7 @@ export const deleteUser = async (req, res) => {
 }
 
 //recuperacion contraseña
+
 export const passwordRecovery = async (req, res) => {
     const { email } = req.body;
 
@@ -124,6 +125,8 @@ export const resetPassToken = async (req, res) => {
     }
 };
 
+export { recoveryLinks };
+
 //premium user
 export const premiumUser = async (req, res) => {
     const { id } = req.params;
@@ -170,5 +173,3 @@ export const uploadFile = async (req, res) => {
         res.status(500).send({ respuesta: 'Error al subir documentos' });
     }
 }
-
-export { recoveryLinks };

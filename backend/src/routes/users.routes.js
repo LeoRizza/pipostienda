@@ -19,4 +19,5 @@ userRouter.post('/upload/profile/:id', upload.array('profileImage', 1), uploadFi
 userRouter.post('/upload/product/:id', passportError('jwt'), authorization('admin'), upload.array('productImage', 4), uploadFile);
 userRouter.post('/upload/document/:id', upload.array('document', 4), uploadFile);
 
+
 export default userRouter

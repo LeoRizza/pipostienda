@@ -28,3 +28,36 @@ export const sendRecoveryMail = (email, recoveryLink) => {
             console.log('Email enviado correctamente')
     })
 }
+
+export const sendTicket = (email, ticket) => {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Ticket de su compra',
+        html: `<div>
+            <h1>Pipos tienda</h1>
+            ${ticket.purchaser},<br/>
+
+            Gracias por comprar con nosotros. El código de tu ticket es: ${ticket.code}.<br/>
+            La compra fue realizada el día ${ticket.purchase_datetime}.<br/>
+
+            Estamos a su disposición por cualquier consulta.<br/>
+
+            Muchas gracias,<br/>
+            El que manda los ticket<br/>
+            <h3>Información de su compra</h3>
+            <b>Código: ${ticket.code}</b><br/>
+            <b>Comprador: ${ticket.purchaser}</b><br/>
+            <b>Precio: $${ticket.amount}</b><br/>
+            <b>Fecha de compra: ${ticket.purchase_datetime}</b><br/>
+        </div>`,
+    };
+
+    transport.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error(error);
+            return;
+        }
+        console.log('Email enviado correctamente');
+    });
+};

@@ -5,13 +5,8 @@ export const getCurrent = async (req, res) => {
 }
 
 export const getLogout = async (req, res) => {
-    /* Si manejo las sessiones desde BDD 
-    if (req.session.login) {
-        req.session.destroy()
-    } */
     res.clearCookie('jwtCookie')
-
-    res.redirect('/login', 200, { resultado: 'Usuario deslogueado' })
+    res.status(200).send({mensaje: 'Sesion cerrada'})
 }
 
 export const postLogin = async (req, res) => {

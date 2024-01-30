@@ -14,9 +14,4 @@ sessionRouter.get('/github', passport.authenticate('github', { scope: ['user:ema
 
 })
 
-/* sessionRouter.get('/testJWT', passport.authenticate('jwt', { session: false }), (req, res) => {
-    console.log(req)
-    res.send(req.user)
-}) */
-
 export default sessionRouter
