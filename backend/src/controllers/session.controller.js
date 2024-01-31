@@ -11,23 +11,18 @@ export const getLogout = async (req, res) => {
 
 export const postLogin = async (req, res) => {
     try {
-        if(!req.user) {
-            return res.status(401).send({mensaje: "Usuario Invalido"})
+        if (!req.user) {
+            return res.status(401).send({ mensaje: "Usuario Inválido" });
         }
-        /* Si manejo las sessiones desde BDD
-        req.session.user = {
-            first_name: req.user.first_name,
-            last_name: req.user.last_name,
-            age: req.user.age,
-            email: req.user.email
-            res.status(200).send({mensaje: "usuario logueado"})
-        }
- */
-        const token = generateToken(req.user, res)
 
-        res.status(200).send({ token })
-    } catch(error) {
-        res.status(500).send({ mensaje: 'Error al iniciar session ${error}'})
+        const token = generateToken(req.user, res);
+
+        req.user.last_connection = new Date();
+        await req.user.save();
+
+        res.status(200).send({ token });
+    } catch (error) {
+        res.status(500).send({ mensaje: `Error al iniciar sesión: ${error}` });
     }
 }
 

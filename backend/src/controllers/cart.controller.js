@@ -31,38 +31,6 @@ export const getCarts = async (req, res) => {
     }
 }
 
-/* export const postProduct = async (req, res) => {
-    const { cid, pid } = req.params
-    const { quantity } = req.body
-
-    try {
-        const cart = await cartModel.findById(cid)
-        if (cart) {
-            const prod = await productModel.findById(pid)
-
-            if (prod) {
-                const indice = cart.products.findIndex(item => item.id_prod._id == pid)
-                console.log("Índice encontrado:", indice);
-                if (indice != -1) {
-                    cart.products[indice].quantity += quantity;
-                } else {
-                    cart.products.push({ id_prod: pid, quantity: quantity })
-                }
-                const respuesta = await cartModel.findByIdAndUpdate(cid, cart)
-                res.status(200).send({ respuesta: 'OK', mensaje: respuesta })
-            } else {
-                res.status(404).send({ respuesta: 'Error en agregar producto Carrito', mensaje: 'Produt Not Found' })
-            }
-        } else {
-            res.status(404).send({ respuesta: 'Error en agregar producto Carrito', mensaje: 'Cart Not Found' })
-        }
-
-    } catch (error) {
-        console.log(error)
-        res.status(400).send({ respuesta: 'Error en agregar producto Carrito', mensaje: error })
-    }
-} */
-
 export const postProduct = async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
@@ -94,6 +62,47 @@ export const postProduct = async (req, res) => {
     }
 };
 
+export const putCart = async (req, res) => {
+    const { cid } = req.params;
+    const productsArray = req.body;
+
+    try {
+        const cart = await cartModel.findById(cid);
+        if (!cart) {
+            return res.status(404).send({ respuesta: "Error", mensaje: "Carrito no encontrado" });
+        }
+
+        if (!Array.isArray(productsArray)) {
+            return res.status(400).send({ respuesta: "Error", mensaje: "Los productos deben estar en un array" });
+        }
+
+        const updatedProducts = [];
+
+        for (const prod of productsArray) {
+            const product = await productModel.findById(prod.id_prod);
+
+            if (!product) {
+                return res.status(404).send({ respuesta: "Error", mensaje: `Producto con ID ${prod.id_prod} no encontrado` });
+            }
+
+            const updatedProduct = {
+                id_prod: prod.id_prod,
+                quantity: prod.quantity
+            };
+
+            updatedProducts.push(updatedProduct);
+        }
+
+        const updatedCart = await cartModel.findByIdAndUpdate(cid, { products: updatedProducts }, { new: true });
+
+        res.status(200).send({
+            mensaje: "Carrito actualizado exitosamente",
+            carrito: updatedCart
+        });
+    } catch (error) {
+        res.status(500).send({ respuesta: "Error", mensaje: "Ha ocurrido un error en el servidor" });
+    }
+};
 
 export const modifyProduct = async (req, res) => {
     const { cid, pid } = req.params;
@@ -120,6 +129,16 @@ export const modifyProduct = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).send({ respuesta: 'Error en actualizar cantidad del producto en el Carrito', mensaje: error.message });
+    }
+}
+
+export const deleteCart = async (req, res) => {
+    const { cid } = req.params
+    try {
+        await cartModel.findByIdAndUpdate(cid, { products: [] })
+        res.status(200).send({ respuesta: 'ok', mensaje: 'Carrito vacio' })
+    } catch (error) {
+        res.status(400).send({ respuesta: 'Error getting cart by id', mensaje: error })
     }
 }
 
@@ -155,9 +174,9 @@ export const purchaseCart = async (req, res) => {
         const { cid } = req.params;
         const { _id, email } = req.user.user;
 
-/*         console.log('UserID:', _id);
-        console.log('CartID (token):', req.user.user.cart);
-        console.log('CartID (ruta):', cid); */
+        /*         console.log('UserID:', _id);
+                console.log('CartID (token):', req.user.user.cart);
+                console.log('CartID (ruta):', cid); */
 
         const userCartId = req.user.user.cart;
 

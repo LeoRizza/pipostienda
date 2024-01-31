@@ -1,14 +1,15 @@
 import { Router } from "express";
-import { getUser, getUserById, putUser, deleteUser, passwordRecovery, resetPassToken, premiumUser, uploadFile } from "../controllers/users.controller.js";
+import { getUser, getUserById, putUser, deleteUser, passwordRecovery, resetPassToken, premiumUser, uploadFile, borrarInactivos } from "../controllers/users.controller.js";
 import { passportError, authorization } from "../utils/messagesError.js";
 import upload from '../config/multer.js';
 
 const userRouter = Router()
 
-userRouter.get('/', passportError('jwt'), authorization('admin'), getUser)
-userRouter.get('/:id', getUserById)
-userRouter.put('/:id', passportError('jwt'), authorization('admin'), putUser)
-userRouter.delete('/:id', passportError('jwt'), authorization('admin'), deleteUser)
+userRouter.get('/', passportError('jwt'), authorization('admin'), getUser);
+userRouter.get('/:id', getUserById);
+userRouter.put('/:id', passportError('jwt'), authorization('admin'), putUser);
+userRouter.delete('/borrar-inactivos', passportError('jwt'), authorization('admin'), borrarInactivos);
+userRouter.delete('/:id', passportError('jwt'), authorization('admin'), deleteUser);
 //recovery password
 userRouter.post('/password-recovery', passwordRecovery);
 userRouter.post('/reset-password/:token', resetPassToken);

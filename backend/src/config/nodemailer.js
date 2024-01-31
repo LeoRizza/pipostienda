@@ -61,3 +61,21 @@ export const sendTicket = (email, ticket) => {
         console.log('Email enviado correctamente');
     });
 };
+
+export const deletedUser = (email) => {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Usuario eliminado.',
+        html: `<div><h1>Su usuario ha sido eliminado</h1><br/>
+        <h4>Cumplimos en informarle que su usuario ha sido eliminado por inactividad ya que ha pasado demasiado tiempo desde su ultima conexion.</h4><br/>
+        <p>Saludos cordiales, Pipos tienda.</p></div>`
+    }
+    transport.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error)
+        } else {
+            console.log('Email enviado correctamente')
+        }
+    })
+}

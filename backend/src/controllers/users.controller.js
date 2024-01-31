@@ -1,15 +1,16 @@
 import { userModel } from "../models/users.models.js";
 import { sendRecoveryMail } from "../config/nodemailer.js";
+import { deletedUser } from "../config/nodemailer.js";
 import crypto from 'crypto';
 
 const recoveryLinks = {};
 
 export const getUser = async (req, res) => {
     try {
-        const users = await userModel.find()
-        res.status(200).send({ respuesta: 'Todos los usuarios', mensaje: users })
+        const users = await userModel.find().select('first_name last_name email');
+        res.status(200).send({ respuesta: 'Todos los usuarios', mensaje: users });
     } catch (error) {
-        res.status(400).send({ respuesta: 'Error en consultar usuarios', mensaje: error })
+        res.status(400).send({ respuesta: 'Error en consultar usuarios', mensaje: error });
     }
 }
 
@@ -56,13 +57,39 @@ export const deleteUser = async (req, res) => {
     }
 }
 
+export const borrarInactivos = async (req, res) => {
+    const inactivity = new Date(new Date().setDate(new Date().getDate() - 2));
+
+    const filter = {
+        $or: [
+            { last_connection: { $lt: inactivity } },
+            { last_connection: null }
+        ]
+    };
+
+    try {
+        const usersToDelete = await userModel.find(filter, 'email');
+        const result = await userModel.deleteMany(filter);
+
+        if (result.deletedCount > 0) {
+            usersToDelete.forEach(user => {
+                deletedUser(user.email);
+            });
+            res.status(200).send({ respuesta: 'Usuarios eliminados correctamente', eliminados: result.deletedCount });
+        } else {
+            res.status(404).send({ respuesta: 'No se encontraron usuarios para eliminar' });
+        }
+    } catch (error) {
+        res.status(400).send({ respuesta: 'Error en borrar usuario', mensaje: error });
+    }
+};
+
 //recuperacion contraseña
 
 export const passwordRecovery = async (req, res) => {
     const { email } = req.body;
 
     try {
-        // Genera un token único
         const token = crypto.randomBytes(20).toString('hex');
 
         // Buscar y actualizar el usuario con el token de recuperación
@@ -78,7 +105,6 @@ export const passwordRecovery = async (req, res) => {
 
         recoveryLinks[token] = { email, timestamp: Date.now() };
 
-        // Construye la URL de recuperación con el token
         const recoveryLink = `http://localhost:8080/api/users/reset-password/${token}`;
 
         // Envía el correo de recuperación
@@ -101,7 +127,6 @@ export const resetPassToken = async (req, res) => {
             const { email } = linkData;
 
             if (newPassword === newPassword2) {
-                // Modificar usuario con nueva contraseña y limpiar el token de recuperación
                 const user = await userModel.findOneAndUpdate(
                     { email, recoveryToken: token },
                     { password: newPassword, recoveryToken: null }

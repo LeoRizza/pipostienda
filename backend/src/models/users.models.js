@@ -51,7 +51,7 @@ const userSchema = new Schema({
         },
     }],
     last_connection: {
-        type: Date,
+        type: String,
         default: null
     }
 })
