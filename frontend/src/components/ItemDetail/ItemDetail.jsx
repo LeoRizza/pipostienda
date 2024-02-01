@@ -49,7 +49,7 @@ const ItemDetail = () => {
         setAgregarCantidad(cantidad);
     };
 
-    const addToCart = () => {
+    const addToCart = (cantidad) => {
         // Aquí puedes realizar la solicitud POST para agregar el producto al carrito
         if (cartId && idItem) {
             const url = `http://localhost:8080/api/carts/${cartId}/products/${idItem}`;
@@ -60,7 +60,7 @@ const ItemDetail = () => {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    quantity: agregarCant,
+                    quantity: cantidad, 
                 }),
             };
 
