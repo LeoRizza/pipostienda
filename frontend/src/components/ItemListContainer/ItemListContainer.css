@@ -13,6 +13,7 @@
 .divTitle {
     display: flex;
     justify-content: center;
+    background: rgb(240, 241, 222);
 }
 
 @media (max-width: 600px) {

@@ -5,7 +5,11 @@ export const getCurrent = async (req, res) => {
 }
 
 export const getLogout = async (req, res) => {
-    res.clearCookie('jwtCookie')
+    /* res.clearCookie('jwtCookie') */
+    res.clearCookie('jwtCookie', {
+        path: '/',
+        httpOnly: true,
+    });
     res.status(200).send({mensaje: 'Sesion cerrada'})
 }
 

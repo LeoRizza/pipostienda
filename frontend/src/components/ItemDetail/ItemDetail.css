@@ -1,18 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;900&display=swap');
 
-.imgDetalle {
+.card .imgDetalle {
     margin-left: auto;
     margin-right: auto;
     margin-top: 3vh;
     border-radius: 15px;
     border: solid 3px #ec4525;
     box-shadow: 25px 10px 20px rgba(121, 28, 10, 1);
+    max-width: 20vw;
 }
 
 .itemDetailDiv {
     display: flex;
     margin: 0 30%;
     justify-content: space-evenly;
+    background: rgb(240, 241, 222);
 }
 
 .cardDetalle2 {

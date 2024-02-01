@@ -16,7 +16,7 @@ const ItemListContainer = () => {
                 let apiUrl = 'http://localhost:8080/api/products';
 
                 const queryParams = {
-                    category: category || '', // Incluye la categoría solo si está presente
+                    category: category || '',
                     ...queryString.parse(location.search),
                 };
 

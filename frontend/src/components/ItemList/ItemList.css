@@ -4,6 +4,7 @@
     justify-content: center;
     text-align: center;
     gap: 20px;
+    background: rgb(240, 241, 222);
 }
 
 .contenedorProductos .cardLoca {
