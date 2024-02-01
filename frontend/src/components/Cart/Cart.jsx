@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getCookiesByName } from "../utils/formsUtils.js";
+import { Link } from "react-router-dom";
 import './Cart.css';
 
 const Cart = () => {
@@ -59,9 +60,8 @@ const Cart = () => {
 
     return (
         <div className="divCart">
-            <h1>Carrito de Compras</h1>
+            <h1 className="precioTotal">Carrito de Compras</h1>
             <div>
-                <h2>Productos en el carrito:</h2>
                 <ul>
                     {cartProducts.map(product => (
                         <div key={product._id} className="itemCart">
@@ -74,8 +74,10 @@ const Cart = () => {
                         </div>
                     ))}
                 </ul>
+                <h3 className="precioTotal">Total: $ {total}</h3>
             </div>
-            <h3 className="precioTotal">Total: $ {total}</h3>
+            
+            <Link to="/checkout" className="cartButton"> Finalizar Compra </Link>
         </div>
     );
 };
